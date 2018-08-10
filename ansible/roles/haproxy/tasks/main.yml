@@ -10,6 +10,6 @@
 - name: make haproxy config
   template:
     src: "haproxy.cfg.j2"
-    dest: "/etc/haproxy/haproxy_new.cfg"
+    dest: "/etc/haproxy/haproxy.cfg"
   notify:
     - restart haproxy
