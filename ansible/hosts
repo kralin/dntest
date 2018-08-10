@@ -1,0 +1,11 @@
+[web:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_user=root
+ansible_ssh_private_key_file=~/.ssh/id_ed25519
+
+[web]
+node1  ansible_host=212.47.250.36
+node2  ansible_host=163.172.187.181
+
+[lb]
+node1
