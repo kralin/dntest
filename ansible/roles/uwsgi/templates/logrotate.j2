@@ -1,0 +1,13 @@
+/var/log/datanyze-logs/*.log {
+        daily
+        missingok
+        rotate 30
+        compress
+        delaycompress
+        notifempty
+        create 0640 app www-data
+        sharedscripts
+        postrotate
+                systemctl restart app.service >/dev/null 2>&1
+        endscript
+}
