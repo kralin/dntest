@@ -1,6 +1,6 @@
 server {
     listen        81 default_server;
-    server_name   datanyze.test  www.datanyze.test;
+    server_name   {{ site__address }}  www.{{ site__address }};
     access_log    /var/log/nginx/app_access.log;
     error_log     /var/log/nginx/app_error.log;
     root          /srv/app;

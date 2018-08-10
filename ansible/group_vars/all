@@ -1,4 +1,5 @@
 ---
+site__address: datanyze.yo.kralin.su
 apt_packages:
   - curl
   - less

@@ -37,14 +37,12 @@ defaults
 frontend http
   bind *:80
   mode http
-  acl host_datanyze hdr(host) -i datanyze.test www.datanyze.test
+  acl host_datanyze hdr(host) -i {{ site__address }} www.{{ site__address }}
   use_backend datanyze_back if host_datanyze
 
 backend datanyze_back
    balance roundrobin
    option forwardfor
    #option httpchk /health
-{% for host in groups['web'] %}
-   server {{ hostvars[host]['inventory_hostname']}} {{ hostvars[host]['ansible_host'] }}:81 check
-{% endfor %}
-
+   server node1	192.168.5.42:81 check
+   server node2	192.168.5.44:81 check
