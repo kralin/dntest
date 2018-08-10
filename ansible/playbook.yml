@@ -3,10 +3,7 @@
   gather_facts: no
   become: yes
   pre_tasks:
-#    - raw: "test -e /usr/bin/python || (sudo apt -y update && sudo apt install -y python-minimal software-properties-common python-pip)"
     - setup:
-  tasks:
-    - debug: msg="privetiki"
   roles:
     - basesystem
     - { name: 'nginx', tags: 'nginx'}
@@ -16,4 +13,15 @@
   gather_facts: yes
   become: yes
   roles:
-    - { name: 'haproxy', tags: 'haproxy'}
+    - haproxy
+  tags: haproxy
+
+# deploy part
+- hosts: web
+  become: yes
+  tasks:
+    - synchronize:
+        src: src/
+        dest: "{{ web__project_directory }}/app"
+    - systemd: name=app state=restarted
+  tags: deploy
