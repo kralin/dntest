@@ -10,6 +10,9 @@ Vagrant.configure("2") do |config|
   config.vm.define "node2" do |n2|
     n2.vm.network "private_network", ip: "192.168.5.44"
   end
+  config.vm.define "node3" do |n3|
+    n2.vm.network "private_network", ip: "192.168.5.46"
+  end
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync",
                           rsync__exclude: ".git/"
@@ -21,7 +24,7 @@ Vagrant.configure("2") do |config|
     ansible.provisioning_path = "/vagrant/ansible"
     ansible.groups = {
       "lb" => ["node1"],
-      "web" => ["node1", "node2"]
+      "web" => ["node2", "node3"]
     }
 #    ansible.host_vars = {
 #      "node1" => {"ansible_host" => "192.168.5.42"},
