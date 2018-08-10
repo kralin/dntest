@@ -1,0 +1,9 @@
+[uwsgi]
+master = true
+processes = 5
+http-socket = 127.0.0.1:8000
+uid = root
+gid = root
+logger = file:/var/log/datanyze-logs/app.log
+vacuum = true
+die-on-term = true

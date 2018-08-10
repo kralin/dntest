@@ -1,0 +1,66 @@
+---
+- name: install packages
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - python3-virtualenv
+    - python3-pip
+    - virtualenv
+
+- name: add app user
+  user:
+    name: app
+    shell: /bin/false
+    groups: www-data
+    append: yes
+
+- name: create project directory
+  file: 
+    path: "{{ item }}"
+    state: directory
+    owner: app
+    group: www-data
+  with_items:
+    - "{{web__project_directory}}/venv"
+    - "{{web__project_directory}}/app"
+    - /var/log/datanyze-logs
+
+- name: install uwsgi
+  pip:
+    virtualenv_python: python3.5
+    virtualenv: "{{web__project_directory}}/venv"
+    name: uwsgi
+
+- name: uwsgi ini config
+  template:
+    src: uwsgi.ini.j2
+    dest: "{{web__project_directory}}/app/uwsgi.ini"
+
+- name: systemd service
+  template:
+    src: app.systemd.j2
+    dest: "/lib/systemd/system/app.service"
+  notify: systemd reload
+
+- name: change project ownership
+  file: 
+    path: "{{ item }}"
+    state: directory
+    owner: app
+    group: www-data
+    recurse: yes
+  with_items:
+    - "{{web__project_directory}}"
+    - /var/log/datanyze-logs
+
+- name: enable service
+  systemd:
+    name: app
+    state: restarted
+    enabled: yes
+
+
+- name: app nginx config
+  template:
+    src: app.nginx.j2
+    dest: "/etc/nginx/conf.d/app.conf"
+  notify: restart nginx

@@ -1,0 +1,10 @@
+---
+apt_packages:
+  - curl
+  - less
+  - htop
+  - apt-transport-https
+  - ntp
+  - unattended-upgrades
+  - etckeeper
+  - moreutils

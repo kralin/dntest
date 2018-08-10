@@ -1,0 +1,14 @@
+---
+- name: add nginx repo
+  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release|lower }} nginx' state=present
+
+- name: add nginx repo key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+
+- name: Install nginx
+  apt: name=nginx state=present update_cache=yes
+
+- name: remove default nginx config
+  file:
+    path: /etc/nginx/conf.d/default.conf
+    state: absent

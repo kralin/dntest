@@ -1,0 +1,15 @@
+---
+- name: add haproxy repo
+  apt_repository: 
+    repo: ppa:vbernat/haproxy-1.8
+
+- name: install haproxy
+  apt: name=haproxy state=present update_cache=yes
+
+
+- name: make haproxy config
+  template:
+    src: "haproxy.cfg.j2"
+    dest: "/etc/haproxy/haproxy_new.cfg"
+  notify:
+    - restart haproxy

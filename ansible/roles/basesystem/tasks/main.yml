@@ -1,0 +1,20 @@
+---
+- name: install packages
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items: '{{ apt_packages }}'
+
+- name: configure etckeeper
+  template: src=etckeeper.conf dest=/etc/etckeeper/etckeeper.conf owner=root group=root mode=0644
+
+- name: init etckeeper
+  command: etckeeper init && etckeeper commit 'initial commit' arg1 arg2
+  args:
+    chdir: /etc
+    creates: /etc/.git
+
+
+- name: configure unattended-upgrades
+  template: src=10periodic dest=/etc/apt/apt.conf.d/10periodic
+
+- name: configure unattended-upgrades - install only security updates
+  template: src=50unattended-upgrades dest=/etc/apt/apt.conf.d/50unattended-upgrades
