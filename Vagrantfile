@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     ansible.version = "2.6.2"
     ansible.provisioning_path = "/vagrant/ansible"
     ansible.groups = {
-      "lb" => ["node1"],
+      "lb" => ["node1", "node2"],
       "web" => ["node1", "node2"]
     }
 #    ansible.host_vars = {
